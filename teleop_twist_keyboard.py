@@ -6,6 +6,7 @@ import roslib; roslib.load_manifest('teleop_twist_keyboard')
 import rospy
 
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Empty
 
 import sys, select, termios, tty
 
@@ -84,7 +85,11 @@ if __name__=="__main__":
 
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
     rospy.init_node('teleop_twist_keyboard')
-
+   
+    pub2 = rospy.Publisher('drone/takeoff', Empty, queue_size = 1)
+    pub3 = rospy.Publisher('drone/land', Empty, queue_size = 1)
+    empty_msg = Empty()
+   
     speed = rospy.get_param("~speed", 0.5)
     turn = rospy.get_param("~turn", 1.0)
     key_timeout = rospy.get_param("~key_timeout", 0.0)
@@ -115,6 +120,10 @@ if __name__=="__main__":
                 if (status == 14):
                     print(msg)
                 status = (status + 1) % 15
+            elif key == '1':
+               print('key = 1')
+            elif key == '2':
+               print('key = 2')
             else:
                 x = 0
                 y = 0
